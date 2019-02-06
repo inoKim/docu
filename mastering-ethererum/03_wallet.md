@@ -53,8 +53,12 @@ BEST : 전송 시 마다 키쌍을 다시 만들어 사용.
 
 * 기본적으로 Hexadecimal로 구성된 코드를 외우기 어렵고, 유효성 체크에 문제가있지만, text로 구성된 코드는 유효성 체크도 가능하기 때문에 관리 측면에서도 장점을 갖는다 
 
-Hexadecimal string 
+Hexadecimal string (PrivateKey)
 > FCCF1AB3329FD5DA3DA9577511F8F137
 
-Mnemonic code 
+Mnemonic code (12개의 단어로 이루어진 코드 시드)
 > wolf juice proud gown wool unfair wall cliff insect more detail hub
+
+## Mnemonic code 
+
+![므네모시네](http://www.rapportian.com/news/photo/201608/28370_25897_1657.jpg)

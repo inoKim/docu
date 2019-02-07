@@ -62,3 +62,47 @@ Mnemonic code (12개의 단어로 이루어진 코드 시드)
 ## Mnemonic code 
 
 ![므네모시네](http://www.rapportian.com/news/photo/201608/28370_25897_1657.jpg)
+> 기억의 연못 in 하데스 
+
+## Generating mnemonic words.
+1. 암호화된 랜덤 sequence S를 생성(128~256bits)
+2. SHA-256 해시의 첫 번째 길이 S/32bit를 취하여 S의 checksum을 생성한다. 
+3. Random sequnce S에 checksum을 추가하여 S + Checksum = SC를 만든다.
+4. SC를 11개의 비트로 나눈다(?)
+5. 사전에 정의된 2048 단어의 각각 11비트를 mapping한다(?)
+6. 생성된 단어들의 순서를 기억하고 사용하여아 한다. 
+![architecture_mnenocincode](https://lh3.googleusercontent.com/ZHlWXublZuhPnf9CzTYuuu4-Q_PP43mV6js4FDBJ9pNkfxjWKxMHxTfPmKfHkIBK3U4Qm73p1DckPh_HEJHb8VhhnHthHvncoZx3bpwp9Jgduy2lRnKkCTAws19kIImjPwjnGH6F)
+7. 이제 실제 Keypair생성에 실제로 사용 될 seed를 만드는데, 필요한 첫 번쨰 요소는 생성된 mnemonic code.
+8. 두 번째 필요한 요소는 각각 unit단위마다 사용하는 salt값
+![](https://github.com/ethereumbook/ethereumbook/raw/develop/images/bip39-part2.png)
+
+#### PBKDF2 
+- 128 ~ 256bit의 entropy(암호화된 랜덤 sequence S)를 사용하여 512bits의 seed를 얻게 해주는 역할 
+- 2048번은 hashing을 진행하기 때문에 보안상 비교적 안전하다. 
+
+#### Entropy input에 따른 결과물의 차이는?
+> Entropy input에 따라 mnmonic words의 갯수 차이가 있지만 결과 시드 값은 똑같이 512bits로 사용한다. 
+
+
+#### 그렇다면 step8에서 사용한 salt(passphrase)값의 역할은?
+> User가 사용하지 않고 application측에서 관리하는 2-factor 보안장치 
+> salt값을 모르면 mnemonic code를 알고 있다고 하더라도 결과 seed를 찾을 수 없다. 
+> But, 실제로 사용하는 곳은 없을 것 같다( 호환성을 위해서?? ) 
+
+
+#### Implemented libraries.
+- BIP-39
+- python-mnemonic
+- ...
+
+### Extended public and private keys. 
+> Seed로 생성된 최초의 keypair == root keypair(RKP)
+> RKP에서 자식 keypair를 생성 할 수 있다. 
+
+* RKP로 자손 KP를 생성 할 수 있고 privKey와 관계없이 다음 depth의 publickey를 생성 할 수 있기 때문에 다양한 방법으로 사용 할 수 있다. 
+* But, xpub, xpriv가 노출 될 경우 모든 지갑이 위험
+* And, 자식 PrivKeyt와 부모 체인코드로 Root private key를 추론할 수 있다. 
+> 이렇기 때문에 나온것이 *Hardened child key derivation* 
+
+### Navigating the HD wallet tree structure
+- HD wallet은 20억개 씩의 일반 자식키와 확장된 자식키를 가지고있기 때문에 무한한 복잡성을 가능케한다. 

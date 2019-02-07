@@ -77,6 +77,7 @@ Mnemonic code (12개의 단어로 이루어진 코드 시드)
 ![](https://github.com/ethereumbook/ethereumbook/raw/develop/images/bip39-part2.png)
 
 #### PBKDF2 
+- Key-streching 함수의 일종 
 - 128 ~ 256bit의 entropy(암호화된 랜덤 sequence S)를 사용하여 512bits의 seed를 얻게 해주는 역할 
 - 2048번은 hashing을 진행하기 때문에 보안상 비교적 안전하다. 
 

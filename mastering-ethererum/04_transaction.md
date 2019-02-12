@@ -24,7 +24,7 @@
 
 * Transaction의 메시지 구조는 ETH의 단순/완벽한 데이터 직렬화를 위해 만들어진 RLP인코딩 체계를 사용하여 직렬화한다. https://ihpark92.tistory.com/47
 
-### The Transaction Nonce
+## The Transaction Nonce
 1. Scalar 값이며, 현재 주소에서 보내진 횟수를 나타낸다. 
 2. Nonce값은 주소로 부터 나온다. 하지만, Ethereum 네트워크에는 명식적으로 저장되지 않는다.
 * 예시 케이스가 있다. 트렌젝션 두개 발생 했지만 계좌에 돈이 모자른 경우에는 순서에 따라 처리 되지 않으면 두 트렌젝션 모두가 reject 된다. 또한 nonce값이 없으면 모든 transaction을 복사해서 당신의 계좌를 공격할 수 있기 때문에 nonce값을 넣어 모든 transaction을 unique하게 만든다.
@@ -44,7 +44,26 @@
 - 같은 값을 가진 transaction이 동시에 출발할 경우 어떤 것이 confirm block에 포함될지는 랜덤하다. 
 - 동시성(concurrency)을 갖는 구조로 netwrok의 요소들(nodes, Dapp)이 구성되어 있지만 합의체의 구조는 singleton으로 동작하기 때문에 일관성을 유지할 수 있다. 
 
-> 
+## Transaction Gas
+- Ethereum 네트워크에서 사용하는 연료, ether와 다른 것이다(?) 
+- DOS공격이나, 의도되지 않은 많은 리소스를 잡아먹는 현상들에 대한 방책으로 제시되었다.
+> gas fee를 내야 transaction을 일으킬 수 있다고하면 공격하려는 사람들이 지속적인 공격을 할때 마다 gas를 내야 하기 때문에 쉽지 않다. 
+- gas 값은 변동성이 큰 ethereum값과 분리되어 운영되고 있으며, 메모리, 계산량에 따라 결정된다. 
+- Gwei 단위
+- ETH gas station이라는 사이트에서 현재 가장 적절한 가스량을 보여준다. 
+> 물론 가스 값이라는게 그 시점에 정해지는게 아니고, miner들이 선택을 하기 때문에 더 적게, 더 많이 넣어도 block에 적용은 된다. 다만 적용에 걸리는 시간이 다르거나 너무 적을경우 block에 영영 못담기는 경우도 발생한다. 
+
+> 이더리움에서 최소 가스 값은 0이다. 최소 값을 지정해 놓지 않았기 때문에 0이라도 transcation이 성공 할 수도, 실패 할 수도있다.
+
+*Ether를 EOA에서 EOA로 전송하는 단순 작업은 21000으로 gaslimit이 정해져있다.*
+
+- Smart contract에 transaction을 일으키는 경에는 가스 값을 측정할 수 있지만, 코드의 복잡성(실행 시점에 contract에 적용되는 내용들이 gas estimate시점과 다를 수 있다)과 실행경로에 따라 다른 가스 소모량을 가지기 때문에 측정된 값은 정확하지 않을 수 있다. 
+
+
+## Transaction Recipient
+* 트렌젝션 특정되어있고, 20bytes의 ethereum address이다.
+* 해당 Recipient는 EOA나 contract주소가 될 수도 있다.
+
 
 
 

@@ -64,9 +64,59 @@
 * 트렌젝션 특정되어있고, 20bytes의 ethereum address이다.
 * 해당 Recipient는 EOA나 contract주소가 될 수도 있다.
 
+* 이더리움에서는 20bytes의 address라는 것 만으로 더이상의 유효성 검증은 하지 않는다. 20bytes라면 유효한 주소로 간주되어 실제 전송이 이루어진다. 
+
+* 때문에 잘못된 전송으로 발생한 dummy ether에 관련되서는 영원히 엑세스 할 수 없게된다. 
+
+## Transaction Value and Data 
+* Transaction에는 Value 나 Data 두가지 모두 혹은 아무것도, 둘 중 하나만도 파라미터로 설정 할 수 있다.
+
+#### Transmittin value to EOAs and Contracts
+* Ethereum에서 발생한 transaction은 받는 주소가 EOA인지 Contract에 따라 다르게 동작한다.
+> EOA : contract라고 flagging되어 있지 않은 모든 주소로 보냈을 경우 해당 계좌의 balance등이 변화하고 합의를 통해 confirm된다. 
+> Contract : EVM에서 컨트렉을 실행하고 Data block에 있는 함수를 실행시킨다. 
+  * Data file가 비어있을 경우 fallback함수를 실행 시키고 그 이후에 logic을 실행한다. 
+  * Payable 함수일 경우에는 Contract의 balance를 증감시키는 역할을 한다(기본적인 pay와 같다)
+
+#### Transmmiting a Data Payload to an EOA or Contract
+Transaction의 데이터 필드에는 값이 들어갈 수 있지만, 이더리움 네트워크에서는 그 부분은 완전히 무시된다. Application(wallet)에 따라 해석해서 데이터로 사용될 수 있지만 각 client마다 다르다. 향후에 
+
+Contract의 경우 Keccak-256(SHA-3)를 사용하여 serialized된 데이터를 사용한다.
+Data field : ABI 데이터를 serialize하여 뒤에 + vlaue를 더한다. 
+* ABI Function serialize 
+> web3.sha3("withdraw(uint256)"); 
+  ->'0x2e1a7d4d13322e7b96f9a57413e1525c250fb7a9021cf91d1540d5b69f16a49f'
+
+> withdraw_amount = web3.toWei(0.01, "ether");
+--> '10000000000000000'
+
+> withdraw_amount_hex = web3.toHex(withdraw_amount);
+--> '0x2386f26fc10000'
+
+ABI의 첫 4bytes padding 32bytes + value(serialized)
+
+"2e1a7d4d" + "00000000000000000000000000000000000000000000000000" + "2386f26fc10000"
+
+>2e1a7d4d000000000000000000000000000000000000000000000000002386f26fc10000
+
+*위 데이터는 withdraw()함수에  0.01이더를 넣었을 때 나오는 serialize된 값.*
+
+
+## Special Transaction: 
+#### Contract creation
+* Transaction에 특수한 경우 중 하나가 컨트렉을 배포할 때이다.
+* 해당 Trasaction은 "zero address"라고 불리는 특별한 주소로 전송된다.
+* "0x0" 주소는 create contract로 쓰이고 어떤 다른 작업도 할 수 없다.
+> 해당 주소로 ether를 전송하는 경우에는 그대로 보내지는데 당연히 다시 찾을 수 없기 때문에 burn의 효과가 있다.
+> BUT, burn하려고 할 때 사용하기 위해 assign해둔 주소가 있으니 사용해라 
+ "0x000000000000000000000000000000000000dEaD"
+* Contract creation은 payload data가 없을 경우(ABI에 정의된 함수를 쓰지 않을경우) 위에 말한 burn account에 보내는 것과 같은 효과가 난다(신뢰할 수 있는 계약을 타지 않았기 때문에)
+
+## Digital Signatures.
 
 
 
 
 
-
+----
+##### fallback : 예외가 발생할 때 호출할 수 있도록 대비해놓은 함수 

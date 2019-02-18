@@ -71,6 +71,21 @@ func main() {
 ```
 > \>Error. 
 
-**?????**
+**미리 정의된 interface**
+![](./img/type_writer.png)
 
-![](./img/type_writer)
+```go
+func Fprintf(w io.Writer, format string, args ... interface{} ) (int, error)
+```
+* fmt.Fprintf(w io.Writer, ... )함수의 첫 번째 인자가 io.Writer인데 predefine된 Writer(p [] byte) 함수를 구현하였기 때문에 사용 가능.
+
+[example:io.Writer interface](https://play.golang.org/p/Y2PYs-DQMKn)
+
+**아마도 int data type이 io.Writer를 사용 가능 하도록 구현 되어있을 것으로 추측..**
+
+* 연습 문제 꼭 풀어보세요!
+[example:](https://play.golang.org/p/WTTtRHcn9JH)
+
+
+
+

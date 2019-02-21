@@ -1,6 +1,6 @@
 ## Interface
 
-* 타 OOP의 interface와 다른점 
+##### 타 OOP의 interface와 다른점 
 > interface에 구현된 내용을 모두 구현하지 않아도 사용이 가능하다.(=묵시적으로 사용 가능하다)
 
 #### Goal!!!
@@ -8,7 +8,7 @@
 2. 인터페이스를 통한 일반화 방법
 
 #### What is the "interface"? 
-* 구상 타입 vs 추상 타입
+##### 구상 타입 vs 추상 타입
 * 추상 타입 
   * 기본 연산을 드러내지 않고 큰 그림만 가지고 있다. 
     * ex) interface
@@ -46,11 +46,9 @@ func Sprintf(format string, args ...interface{}) string {
 > 이 처럼 인터페이스를 상속(?) 하는 타입을 자유롭게 변경하는것이 대체 가능성(substitutability)라고 한다. 
 
 
-#### 내장 interface를 재구현하여 사용하는 방법
-
-**golang 내부에 정의된 interface**
+#### golang 기본 interface를 재구현하여 사용하는 방법
+##### golang에 기본으로 정의된 interface
 ![](./img/type_writer.png)
-
 
 ```go 
 package main
@@ -73,11 +71,11 @@ func main() {
 }
 
 ```
+> \> go run ...
 > \>5
 > \>12
 
 * 이해가 안가서 string도 똑같이 실행되는지 보려고 해봤지만 에러가 발생.
-
 ```go
     var str string
     fmt.Fprintf(&str, "hello, %s" , name)
@@ -91,7 +89,7 @@ func Fprintf(w io.Writer, format string, args ... interface{} ) (int, error)
 
 [example:io.Writer interface](https://play.golang.org/p/Y2PYs-DQMKn)
 
-**아마도 int data type이 io.Writer를 사용 가능 하도록 구현 되어있을 것으로 추측..**
+~~아마도 int data type이 io.Writer를 사용 가능 하도록 구현 되어있을 것으로 추측..~~
 
 * 연습 문제 꼭 풀어보세요!
 [example:](https://play.golang.org/p/WTTtRHcn9JH)
@@ -132,7 +130,7 @@ w = time.Second
 ```
 > Write메소드가 있고 없고에 따라 컴파일 에러가 발생 한다.
 
-##### 함수 선언 시 주의점!
+###### Tip! (함수 선언 시 주의점)
 수신자의 데이터 타입(구상 type과 pointer타입)에 따라 instance 생성 후에 사용 할 수 있는 메서드의 종류가 달라진다.
 ```go 
 type IntSet struct {
@@ -151,7 +149,6 @@ func main() {
 }
 ```
 ```go 
-
 type IntSet struct {
 	TempString string;
 }
@@ -183,6 +180,8 @@ any = "hello"
 ```
 
 > Object(java), void*(c,c++계열)와 비슷한 역할을 한다. 
+
+##### 비어 있는 interface 예시
 ```go
 package src/fmt/print.go
 
@@ -190,10 +189,18 @@ func Printf(format string, a ...interface{}) (n int, err error) {
 	return Fprintf(os.Stdout, format, a...)
 }
 ```
-이와같은 방식으로 사용한다. 
+
+##### 사용하기 좋은 예(자바에서 사용)
+* 모든 데이터 타입을 받을 때도 쓰겠지만, Authentication layer에서 쓰면 유용 할 것.
+```java
+//java
+public Object tryAuthentication(Object token) {
+	,,,
+}
+```
 
 ----
-#### flag.Value로 플래그 분석 ???
+#### ~~flag.Value로 플래그 분석 ???~~
 
 #### Interface 의 값 
 * Interface는 생성 시 type과 value 영역으로 나누어져 초기화 되는데 
@@ -283,7 +290,7 @@ func (e *errorString) Error() string { return e.text }
 ```
 ----
 
-#### 표현식 평가하기 
+#### ~~표현식 평가하기~~
 #### 타입 단언(Type Assertion)
 * 현재 데이터의 타입을 확인 하여 사용 할 수 있도록 하는 방법
 ```go
@@ -344,5 +351,3 @@ func  sqlQuote(x interface{}) string {
 ```
 > Assertion을 통해 데이터 타입을 확인하고 해당 포맷으로 바꿔서 유효한 데이터로 바꾼다 
 > 해당 코드에서는 if-else를 연속으로 사용하지만, switch문이 빠르니까 바꾸자!
-
-

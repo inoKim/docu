@@ -351,3 +351,10 @@ func  sqlQuote(x interface{}) string {
 ```
 > Assertion을 통해 데이터 타입을 확인하고 해당 포맷으로 바꿔서 유효한 데이터로 바꾼다 
 > 해당 코드에서는 if-else를 연속으로 사용하지만, switch문이 빠르니까 바꾸자!
+
+
+----
+##### Interface를 사용해보니 기존의 OOP에서 사용하던 것과 차이가 있지만 큰 틀 자체는 비슷한 방식인 것 같다. 
+##### 다만, interface에 정의된 모든 함수를 구현하지 않아도 사용 할 수 있는 것으로 보이며 지금까지 본 내용에 의하면 extend/implement의 개념이 없어 프로그램의 구조를 강제하는 방식으로는 사용하기 힘들 것 같다.
+> 이렇게 생각한다면 기존의 interface와 완전히 다른 이야기가 된다. [Is that a go "Object oriented??](https://flaviocopes.com/golang-is-go-object-oriented/)
+##### 대부분 OOP에서는 정의된 함수를 모두 구현해야 하기 때문에 implement하면 자동완성이 가능했는데 아직은 IDE에서 그런 역할을 해주는 것이 있으면 좋겠다.

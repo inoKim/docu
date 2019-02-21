@@ -46,6 +46,12 @@ func Sprintf(format string, args ...interface{}) string {
 > 이 처럼 인터페이스를 상속(?) 하는 타입을 자유롭게 변경하는것이 대체 가능성(substitutability)라고 한다. 
 
 
+#### 내장 interface를 재구현하여 사용하는 방법
+
+**golang 내부에 정의된 interface**
+![](./img/type_writer.png)
+
+
 ```go 
 package main
 import (
@@ -77,9 +83,6 @@ func main() {
     fmt.Fprintf(&str, "hello, %s" , name)
 ```
 > \>Error. 
-
-**미리 정의된 interface**
-![](./img/type_writer.png)
 
 ```go
 func Fprintf(w io.Writer, format string, args ... interface{} ) (int, error)

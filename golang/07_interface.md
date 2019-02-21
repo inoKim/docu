@@ -16,6 +16,12 @@
   * 해당 값이 무엇인지, 무엇을 할 수 있는지 볼 수 있다.
     * ex) var, slice, struct....
 
+#### interface 기본 표현 방식
+```go
+type helloInterface interface { // interface 정의
+	SayHello() string  // 상속받아 사용할 메서드 정의
+}
+```
 
 #### golang 내부에서 사용하는 interface는? 
 ```go

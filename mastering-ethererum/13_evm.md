@@ -1,5 +1,6 @@
 ### What is the EVM ?
 
+- EVM은 Ethereum을 전반적으로 관리하는 내부 시스템 중의 하나로 특정 위치에 종속되지 않고 시스템 상에 존재 한다.
 - Smart contract을 네트워크에 적용하고, 실행 시키는 역할을 담당
 - 단순히 vlaue만을 전송 할 경우 필요 없다.
 - 이외의 모든 것은 EVM을 통해 진행되며 이 분산 컴퓨팅 시스템은 각각의 데이터 저장소도 갖는다.
@@ -37,4 +38,36 @@
 - Logic operation
   > LT, GT, SLT, SGT, EQ, ISZERO, AND, OR, XOR, NOT, BYTE
 - Env codes
-  > GAS, ADDRESS, BALANCE, ORIGIN, CALLER, CALLVALUE, CALLDATALOAD, ...
+
+  > _GAS, ADDRESS, BALANCE, ORIGIN, CALLER, CALLVALUE, CALLDATALOAD, ..._
+
+#### Ethereum state
+
+##### EVM은 Smart contract을 실행하고 실행된 유효한 결과를 이더리움에 반영하는 것이다.
+
+- 이더리움상의 최상위 계층은 20bytes의 주소로 이루어진 계층이다.
+- 하위 계층은 아래와 같이 구성되어 있다.
+
+1. Account당 소유한 balance.
+2. nonce값
+3. account' storage (only contract)
+4. progran code (only contract)
+
+#### Compiling solidity to EVM bytecodes.
+
+- Solidity compiler를 통해 컴파일이 가능함
+
+* --opcodes 옵션을 통해 .sol파일의 opcode를 확인할 수 있다.
+
+```solidity
+pragma solidity ^0.4.19;
+
+contract example {
+
+  address contractOwner;
+
+  function example() {
+    contractOwner = msg.sender;
+  }
+}
+```

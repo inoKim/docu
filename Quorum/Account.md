@@ -117,17 +117,62 @@
 
 ### key.go
 
+#### keyStore/interface
+
+- func GetKey() : 디스크로부터 불러서 복호화 한다
+- func SetKey() : 암호화해서 디스크에 저장한다
+- func JoinPath() : ...?
+
+#### PlainKeyJSON/Struct
+
+1. Address string
+2. PrivateKey string
+3. Id string
+4. Version int
+
+#### encryptedKeyJSONV3/Struct
+
+1. Address string `json:"address"`
+2. Crypto cryptoJSON `json:"crypto"`
+3. Id string `json:"id"`
+4. Version int `json:"version"`
+
+#### encryptedKey.JSONV1/Strict
+
+1. Address string `json:"address"`
+2. Crypto cryptoJSON `json:"crypto"`
+3. Id string `json:"id"`
+4. Version string `json:"version"`
+
+#### crypto.JSON
+
+1. Cipher string `json:"cipher"`
+2. CipherText string `json:"ciphertext"`
+3. CipherParams cipherparamsJSON `json:"cipherparams"`
+4. KDF string `json:"kdf"`
+5. KDFParams map[string]interface{} `json:"kdfparams"`
+6. MAC string `json:"mac"`
+
 #### Key/Struct
 
 1. ID uuid.UUID
 2. Address common.Addres
 3. PrivateKey \*ecdsa.PrivateKey
 
-#### keyStore/interface
+- func MarshalJSON() : JSON으로 마샬링
+- func UnMarshalJSON() : JSON에서 언마샬
 
-- func GetKey() : 디스크로부터 불러서 복호화 한다
-- func SetKey() : 암호화해서 디스크에 저장한다
-- func JoinPath() : ...?
+##### Func NEwKeyForDirectICAP() : address를 155bit이하로 맞추고 DirectICAP에 맞도록 바꾼다 ( 첫자리가 0이 될때 까지 무한 반복)
+
+##### Func newKeyFromECDSA() : ECC를 통해 keypair를 생성한다
+
+##### Func newKey() : 랜덤키를 생성한다 (Not keypair, address+privateKey)
+
+##### Func storeNewKey() : 키를 지정된 패스에 저장
+
+##### Func writeKeyFile() : 디렉토리에 키를 저장한다
+
+##### Func toISO8601 : Time(instance) to ISO8601 format
 
 ---
 
